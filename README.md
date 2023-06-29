@@ -2,13 +2,6 @@
 
 This is a Svelte.js project that fetches random lunch recommendations from the Lunch API and displays them in a user-friendly format.
 
-## Prerequisites
-
-Before getting started, make sure you have the following installed:
-
-- Node.js (version 12 or higher)
-- npm (Node Package Manager)
-
 ## Getting Started
 
 To set up the project locally, follow these steps:
