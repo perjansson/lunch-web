@@ -1,6 +1,7 @@
 <script lang="ts">
   import { fade, scale } from 'svelte/transition'
   import Loading from './Loading.svelte'
+  import { backendUrl } from '../constants'
 
   enum UIState {
     Loading,
@@ -34,7 +35,7 @@
       )
 
       const response = await fetch(
-        `http://localhost:8080/api/${locationId}/restaurant?isoDate=${isoDate}`
+        `${backendUrl}/api/${locationId}/restaurant?isoDate=${isoDate}`
       )
 
       if (response.ok) {

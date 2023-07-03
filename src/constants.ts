@@ -15,3 +15,8 @@ export let locations: Location[] = [
   { id: 'lisbon', path: 'lisbon', label: 'Lisbon' },
   { id: 'seinajoki', path: 'seinajoki', label: 'Seinäjoki' },
 ]
+
+export const backendUrl =
+  window.location.hostname === 'localhost'
+    ? 'http://localhost:8080'
+    : 'https://lunch-api.fly.dev'
