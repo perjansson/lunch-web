@@ -1,37 +1,46 @@
 <script lang="ts">
-  import { Router, Link, Route } from 'svelte-routing'
+  import { Router, Route } from 'svelte-routing'
 
-  import Turku from './routes/Turku.svelte'
-  import NewYork from './routes/NewYork.svelte'
-  import Tampere from './routes/Tampere.svelte'
   import Background from './components/Background.svelte'
+  import Menu from './components/Menu.svelte'
+  import Location from './routes/Location.svelte'
+  import { onMount } from 'svelte'
 
-  var url = window.location.href
-  var segments = url.split('/')
-  var location = segments[segments.length - 1] ?? '/'
-  let route = location
+  let initialRoute = getRoute()
+  let showMenu = initialRoute === '' // Show menu if no location is selected
+
+  function getRoute() {
+    var url = window.location.href
+    var segments = url.split('/')
+    return segments[segments.length - 1] ?? '/'
+  }
+
+  onMount(() => {
+    window.addEventListener('popstate', function (event) {
+      showMenu = getRoute() === ''
+    })
+  })
 
   console.info(
-    `App component initialized with location: ${location} from url: ${window.location.href}`
+    `App component initialized with url: ${initialRoute} from url: ${window.location.href}`
   )
 </script>
 
-<Router {route}>
+<Router url={initialRoute}>
   <Background>
+    <Menu isOpen={showMenu} onClose={() => (showMenu = false)} />
+    <button class="menu-button" on:click={() => (showMenu = !showMenu)}>
+      <img
+        src={showMenu ? '/menu-close.png' : '/menu-open.png'}
+        alt={`${showMenu} ? 'Close' : 'Open' menu`}
+      />
+    </button>
     <div class="container">
       <div class="content">
-        <Route path="/turku" component={Turku} />
-        <Route path="/newyork" component={NewYork} />
-        <Route path="/tampere" component={Tampere} />
+        <Route path="/:locationId" let:params>
+          <Location locationId={params.locationId} />
+        </Route>
       </div>
-
-      <footer class="footer">
-        <nav>
-          <Link to="/turku">Turku</Link>
-          <Link to="/newyork">New York</Link>
-          <Link to="/tampere">Tampere</Link>
-        </nav>
-      </footer>
     </div>
   </Background>
 </Router>
@@ -41,17 +50,30 @@
     display: flex;
     flex-direction: column;
     min-height: 100%;
+    max-width: 95%;
   }
 
   .content {
     flex: 1;
     display: flex;
     flex-direction: column;
+    justify-content: center;
     align-items: center;
     padding-top: 40px;
   }
 
-  .footer {
-    flex-shrink: 0;
+  .menu-button {
+    position: fixed;
+    top: 10px;
+    right: 10px;
+    z-index: 1000;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .menu-button img {
+    width: 40px;
+    height: 40px;
   }
 </style>

@@ -7,12 +7,19 @@
     Error,
   }
 
-  export let location: string
+  export let locationId: string
   let uiState: UIState = UIState.Loading
   let restaurant = undefined
 
-  onMount(async () => {
+  $: {
+    fetchRestaurant(locationId)
+  }
+
+  async function fetchRestaurant(locationId: string) {
     try {
+      uiState = UIState.Loading
+      restaurant = undefined
+
       const date = new Date()
       const isoDate =
         date.getFullYear() +
@@ -20,19 +27,20 @@
         (date.getMonth() + 1).toString().padStart(2, '0') +
         '-' +
         date.getDate().toString().padStart(2, '0')
-      const timeZoneOffsetInMinutes = date.getTimezoneOffset()
 
       console.info(
-        `Getting restaurant recommendation of the day. Current date: ${isoDate} with timezone offset: ${timeZoneOffsetInMinutes}`
+        `Getting restaurant recommendation of the day for ${locationId} at ${isoDate}.`
       )
 
       const response = await fetch(
-        `http://localhost:8080/api/${location}/restaurant?timeZoneOffsetInMinutes=${timeZoneOffsetInMinutes}`
+        `http://localhost:8080/api/${locationId}/restaurant?isoDate=${isoDate}`
       )
 
       if (response.ok) {
         restaurant = await response.json()
-        console.info(`Got restaurant recommendation: ${restaurant.name}`)
+        console.info(
+          `Got restaurant recommendation of the day for ${locationId} at ${isoDate}: ${restaurant.name}.`
+        )
         uiState = UIState.Done
       } else {
         console.error(
@@ -44,7 +52,7 @@
       console.error(`Error getting restaurant recommendation: ${error}`)
       uiState = UIState.Error
     }
-  })
+  }
 </script>
 
 <main>
@@ -58,9 +66,19 @@
 </main>
 
 <style>
+  main {
+    min-height: 200px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
   .restaurant {
     height: 160px;
-    font-size: 78px;
+    font-size: 120px;
+    font-family: Rubik, sans-serif;
+    font-weight: bold;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
     transition: font-size 0.3s ease-in-out;
   }
 

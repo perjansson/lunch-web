@@ -6,6 +6,8 @@
   .container {
     width: 100%;
     height: 100vh;
+    display: flex;
+    justify-content: center;
     background: linear-gradient(to right, #ff9a9e, #fad0c4);
     color: #fff;
     font-family: Rubik, sans-serif;
