@@ -1,5 +1,6 @@
 <script lang="ts">
-  import { onMount } from 'svelte'
+  import { fade, scale } from 'svelte/transition'
+  import Loading from './Loading.svelte'
 
   enum UIState {
     Loading,
@@ -56,8 +57,18 @@
 </script>
 
 <main>
-  {#if uiState === UIState.Done}
-    <p class="restaurant">{restaurant.name}</p>
+  {#if uiState === UIState.Loading}
+    <Loading />
+  {:else if uiState === UIState.Done}
+    <div class="restaurant">
+      {#each restaurant.name.split('') as char, i (char + i)}
+        <span
+          in:scale={{ delay: 30 * i, duration: 250 }}
+          out:fade={{ duration: 300 }}
+          class="char">{@html char === ' ' ? '&nbsp;' : char}</span
+        >
+      {/each}
+    </div>
   {:else if uiState === UIState.Error}
     <p>
       Error occurred while loading data, check browser logs for more details.
@@ -92,5 +103,10 @@
     .restaurant {
       font-size: 32px;
     }
+  }
+
+  .char {
+    display: inline-block;
+    perspective: 1000px;
   }
 </style>
