@@ -9,11 +9,11 @@
 
 <h1>{location.label}</h1>
 
-<Restaurant locationId={location.id} />
+<Restaurant {location} />
 
 <style>
   h1 {
-    font-size: 24px;
+    font-size: 42px;
     margin-bottom: 20px;
   }
 </style>

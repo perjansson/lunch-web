@@ -1,20 +1,21 @@
 <script lang="ts">
   import { fade, scale } from 'svelte/transition'
   import Loading from './Loading.svelte'
-  import { backendUrl } from '../constants'
+  import { backendUrl, type Location } from '../constants'
 
   enum UIState {
     Loading,
     Done,
+    NoRestaurants,
     Error,
   }
 
-  export let locationId: string
+  export let location: Location
   let uiState: UIState = UIState.Loading
   let restaurant = undefined
 
   $: {
-    fetchRestaurant(locationId)
+    fetchRestaurant(location.id)
   }
 
   async function fetchRestaurant(locationId: string) {
@@ -44,6 +45,12 @@
           `Got restaurant recommendation of the day for ${locationId} at ${isoDate}: ${restaurant.name}.`
         )
         uiState = UIState.Done
+      } else if (response.status === 404) {
+        console.error(
+          `Error getting restaurant recommendation: ${response.status} ${response.statusText}`
+        )
+
+        uiState = UIState.NoRestaurants
       } else {
         console.error(
           `Error getting restaurant recommendation: ${response.status} ${response.statusText}`
@@ -70,6 +77,15 @@
         >
       {/each}
     </div>
+  {:else if uiState === UIState.NoRestaurants}
+    <p>
+      No restaurants for {location.label} has been added yet. You can add them in
+      <a
+        href={`https://docs.google.com/spreadsheets/d/1cxojkskq9deUDuTWqa-XAIbE7Cnu41K3L1K83UkO7bk/edit#gid=${location.gid}`}
+        target="_blank"
+        rel="noopener noreferrer">this Google spreadsheet</a
+      >.
+    </p>
   {:else if uiState === UIState.Error}
     <p>
       Error occurred while loading data, check browser logs for more details.
