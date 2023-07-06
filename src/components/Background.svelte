@@ -1,18 +1,22 @@
-<div class="container">
+<div
+  class="container"
+  style={`background: linear-gradient(to right, var(--currentBackgroundColor), var(--currentBackgroundColorAlpha));`}
+>
   <slot />
 </div>
 
 <style>
   .container {
-    width: 100%;
-    height: 100vh;
+    min-height: 100vh;
     display: flex;
     justify-content: center;
-    background: linear-gradient(to right, #ff9a9e, #fad0c4);
-    color: #fff;
-    font-family: Rubik, sans-serif;
-    font-weight: bold;
-    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
-    font-size: 24px;
+    padding-left: env(safe-area-inset-left);
+    padding-right: env(safe-area-inset-right);
+  }
+
+  @supports (height: 100svh) {
+    .container {
+      min-height: 100svh;
+    }
   }
 </style>

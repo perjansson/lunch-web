@@ -20,8 +20,8 @@
 
   async function fetchRestaurant(locationId: string) {
     try {
-      uiState = UIState.Loading
       restaurant = undefined
+      uiState = UIState.Loading
 
       const date = new Date()
       const isoDate =
@@ -64,17 +64,19 @@
   }
 </script>
 
-<main>
+<div class="container">
   {#if uiState === UIState.Loading}
     <Loading />
   {:else if uiState === UIState.Done}
     <div class="restaurant">
       {#each restaurant.name.split('') as char, i (char + i)}
-        <span
-          in:scale={{ delay: 30 * i, duration: 250 }}
-          out:fade={{ duration: 300 }}
-          class="char">{@html char === ' ' ? '&nbsp;' : char}</span
-        >
+        {#if char === ' '}
+          <br />
+        {:else}
+          <span in:scale={{ delay: 30 * i, duration: 250 }} class="char"
+            >{@html char === ' ' ? '&nbsp;' : char}</span
+          >
+        {/if}
       {/each}
     </div>
   {:else if uiState === UIState.NoRestaurants}
@@ -91,10 +93,10 @@
       Error occurred while loading data, check browser logs for more details.
     </p>
   {/if}
-</main>
+</div>
 
 <style>
-  main {
+  .container {
     min-height: 200px;
     display: flex;
     justify-content: center;
@@ -102,8 +104,8 @@
   }
 
   .restaurant {
-    height: 160px;
-    font-size: 120px;
+    height: 200px;
+    font-size: 104px;
     font-family: Rubik, sans-serif;
     font-weight: bold;
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
@@ -112,13 +114,21 @@
 
   @media (max-width: 768px) {
     .restaurant {
-      font-size: 48px;
+      height: 160px;
+      font-size: 64px;
     }
   }
 
   @media (max-width: 480px) {
     .restaurant {
-      font-size: 32px;
+      height: 140px;
+      font-size: 48px;
+    }
+  }
+
+  @media only screen and (min-device-width: 320px) and (max-device-width: 767px) and (orientation: landscape) {
+    .restaurant {
+      font-size: 48px;
     }
   }
 

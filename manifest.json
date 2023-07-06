@@ -1,0 +1,10 @@
+{
+  "name": "What's for lunch?",
+  "short_name": "Lunch?",
+  "start_url": "/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "scope": "/",
+  "background_color": "#e4eaed",
+  "theme_color": "red"
+}

@@ -1,13 +1,20 @@
 <script lang="ts">
   import { Router, Route } from 'svelte-routing'
-
+  import { onMount } from 'svelte'
   import Background from './components/Background.svelte'
   import Menu from './components/Menu.svelte'
   import Location from './routes/Location.svelte'
-  import { onMount } from 'svelte'
 
-  let initialRoute = getRoute()
-  let showMenu = initialRoute === '' // Show menu if no location is selected
+  let currentRoute = getRoute()
+  let initialRoute = currentRoute
+  let showMenuButton = currentRoute !== ''
+
+  $: showMenu = initialRoute === '' // Show menu if no location is selected
+  $: {
+    if (currentRoute === '/') {
+      showMenu = true
+    }
+  }
 
   function getRoute() {
     var url = window.location.href
@@ -16,8 +23,11 @@
   }
 
   onMount(() => {
-    window.addEventListener('popstate', function (event) {
-      showMenu = getRoute() === ''
+    // This is to handle browser back/forward navigation
+    window.addEventListener('popstate', function () {
+      currentRoute = getRoute()
+      showMenu = currentRoute === ''
+      showMenuButton = currentRoute !== ''
     })
   })
 
@@ -28,20 +38,28 @@
 
 <Router url={initialRoute}>
   <Background>
-    <Menu isOpen={showMenu} onClose={() => (showMenu = false)} />
-    <button class="menu-button" on:click={() => (showMenu = !showMenu)}>
-      <img
-        src={showMenu ? '/menu-close.png' : '/menu-open.png'}
-        alt={`${showMenu} ? 'Close' : 'Open' menu`}
-      />
-    </button>
-    <div class="container">
+    <Menu
+      isOpen={showMenu}
+      onMenuItemSelected={(locationId) => {
+        showMenu = false
+        showMenuButton = locationId !== ''
+      }}
+    />
+    {#if showMenuButton}
+      <button class="menu-button" on:click={() => (showMenu = !showMenu)}>
+        <img
+          src={showMenu ? '/menu-close.png' : '/menu-open.png'}
+          alt={`${showMenu} ? 'Close' : 'Open' menu`}
+        />
+      </button>
+    {/if}
+    <main class="container">
       <div class="content">
         <Route path="/:locationId" let:params>
           <Location locationId={params.locationId} />
         </Route>
       </div>
-    </div>
+    </main>
   </Background>
 </Router>
 
@@ -49,8 +67,8 @@
   .container {
     display: flex;
     flex-direction: column;
-    min-height: 100%;
-    max-width: 95%;
+    max-width: 90%;
+    width: 90%;
   }
 
   .content {
@@ -59,7 +77,6 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    padding-top: 40px;
   }
 
   .menu-button {
