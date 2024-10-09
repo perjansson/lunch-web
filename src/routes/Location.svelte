@@ -15,19 +15,18 @@
   .location {
     font-size: 42px;
     transition: all 0.3s ease-in-out;
-    text-decoration: underline;
     margin-bottom: 20px;
   }
 
   @media (max-width: 768px) {
     .location {
-      font-size: 32px;
+      font-size: 48px;
     }
   }
 
   @media (max-width: 480px) {
     .location {
-      font-size: 18px;
+      font-size: 24px;
     }
   }
 </style>

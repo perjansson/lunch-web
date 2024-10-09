@@ -73,6 +73,12 @@
     text-align: center;
     overflow-y: auto;
     user-select: none;
+    height: 80vh;
+    padding: 10vh 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
   }
 
   .menu-option {

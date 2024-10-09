@@ -1,5 +1,6 @@
 <script lang="ts">
   import { fade, scale } from 'svelte/transition'
+  import { fly } from 'svelte/transition'
   import Loading from './Loading.svelte'
   import { backendUrl, type Location } from '../constants'
 
@@ -73,11 +74,15 @@
         {#if char === ' '}
           <br />
         {:else}
-          <span in:scale={{ delay: 30 * i, duration: 250 }} class="char"
-            >{@html char === ' ' ? '&nbsp;' : char}</span
-          >
+          <span in:fly={{ y: 100, delay: 15 * i, duration: 200 }} class="char">
+            {@html char === ' ' ? '&nbsp;' : char}
+          </span>
         {/if}
       {/each}
+    </div>
+    <div class="quote">
+      {restaurant.quote}
+      <div class="powered-by">Powered by OpenAI</div>
     </div>
   {:else if uiState === UIState.NoRestaurants}
     <p>
@@ -101,34 +106,57 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    flex-direction: column;
+    gap: 40px;
   }
 
   .restaurant {
-    height: 200px;
     font-size: 104px;
     font-family: Rubik, sans-serif;
     font-weight: bold;
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
     transition: font-size 0.3s ease-in-out;
+    overflow: hidden;
+  }
+
+  .quote {
+    font-size: 20px;
+    font-family: Rubik, sans-serif;
+    text-align: center;
+    max-width: 60%;
+    margin: 0 auto;
+  }
+
+  .powered-by {
+    font-size: 8px;
+    color: #888;
+    margin-top: 10px;
   }
 
   @media (max-width: 768px) {
     .restaurant {
-      height: 160px;
-      font-size: 64px;
+      font-size: 100px;
+    }
+    .quote {
+      max-width: 80%;
     }
   }
 
   @media (max-width: 480px) {
     .restaurant {
-      height: 140px;
-      font-size: 48px;
+      font-size: 84px;
+    }
+    .quote {
+      max-width: 95%;
     }
   }
 
   @media only screen and (min-device-width: 320px) and (max-device-width: 767px) and (orientation: landscape) {
     .restaurant {
-      font-size: 48px;
+      font-size: 84px;
+    }
+    .quote {
+      max-width: 60%;
     }
   }
 
