@@ -5,10 +5,18 @@
   export let locationId: string
   $: location = locations.find((location) => location.id === locationId)
   $: console.info(`Location component initialized with id: ${location.id}`)
+
+  const options: Intl.DateTimeFormatOptions = {
+    weekday: 'long',
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
+  }
+  const currentDate = new Date().toLocaleDateString(undefined, options)
 </script>
 
 <h1 class="location">{location.label}</h1>
-
+<p>{currentDate}</p>
 <Restaurant {location} />
 
 <style>

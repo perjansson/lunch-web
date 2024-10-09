@@ -107,16 +107,18 @@
     justify-content: center;
     align-items: center;
     flex-direction: column;
-    gap: 40px;
+    gap: 20px;
   }
 
   .restaurant {
+    margin: 20px 0;
     font-size: 104px;
     font-family: Rubik, sans-serif;
     font-weight: bold;
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
     transition: font-size 0.3s ease-in-out;
     overflow: hidden;
+    padding-bottom: 10px;
   }
 
   .quote {
