@@ -7,16 +7,16 @@
   afterUpdate(() => {
     setTimeout(() => {
       showLoading = true
-    }, 1000)
+    }, 500)
   })
 </script>
 
 {#if showLoading}
   <img
-    in:fade={{ duration: 1000 }}
-    src="/globe-optimize.gif"
+    in:fade={{ duration: 500 }}
+    src="/broccoli.webp"
     alt="Loading..."
-    width="100"
-    height="100"
+    width="160"
+    height="160"
   />
 {/if}
