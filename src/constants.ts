@@ -15,6 +15,7 @@ export let locations: Location[] = [
   { id: 'stockholm', path: 'stockholm', label: 'Stockholm', gid: 1316456042 },
   { id: 'lisbon', path: 'lisbon', label: 'Lisbon', gid: 828757182 },
   { id: 'seinajoki', path: 'seinajoki', label: 'Seinäjoki', gid: 962120610 },
+  { id: 'rovaniemi', path: 'rovaniemi', label: 'Rovaniemi', gid: 2134184409 },
 ]
 
 export const backendUrl =
